@@ -28,6 +28,7 @@
 /* USER CODE BEGIN PTD */
 int flag_band;
 int isDataReady;
+int time_last_pcdata;
 char PCData[40];
 char TRXData[40];
 /* USER CODE END PTD */
@@ -51,7 +52,7 @@ void USART2_Send (char chr){
 	USART2->TDR = chr;
 }
 
-void Send_String_to_TRX (char* str){
+void Send_String_To_TRX (char* str){
 	uint8_t i = 0;
 	while(str[i])
 	USART2_Send (str[i++]);
@@ -103,9 +104,9 @@ void SetOutput(){
 		LL_GPIO_SetOutputPin(OUT_6_GPIO_Port, OUT_6_Pin);
 		flag_band=0;
 		}
-	if (flag_band==0){
+	/*if (flag_band==0){
 		TRXData[5] = TRXData[6] = TRXData[7] = TRXData[0] = TRXData[1] = '0';
-	}
+	}*/
 
 }
 /* USER CODE END PD */
@@ -174,6 +175,7 @@ int main(void)
   LL_USART_EnableIT_RXNE_RXFNE(USART2);
   flag_band = 0;
   isDataReady=0;
+  time_last_pcdata=0;
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -183,6 +185,10 @@ int main(void)
     /* USER CODE END WHILE */
     if (isDataReady){
     	SetOutput();
+    }
+    if ((HAL_GetTick() - time_last_pcdata) > 3000){
+    	Send_String_To_TRX("IF;");
+    	LL_mDelay(1000);
     }
 
     /* USER CODE BEGIN 3 */

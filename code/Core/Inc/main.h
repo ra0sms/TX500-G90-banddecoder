@@ -43,7 +43,7 @@ extern "C" {
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 void Send_String_To_PC (char* str);
-void Send_String_to_TRX (char* str);
+void Send_String_To_TRX (char* str);
 
 /* USER CODE END Includes */
 

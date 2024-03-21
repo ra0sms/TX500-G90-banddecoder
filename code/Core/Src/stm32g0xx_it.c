@@ -27,6 +27,7 @@
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN TD */
 extern int flag_band;
+extern int time_last_pcdata;
 extern int isDataReady;
 extern char PCData[40];
 extern char TRXData[40];
@@ -180,6 +181,9 @@ void USART1_IRQHandler(void)
 		} else {
 			PCData[cnt] = ';';
 			cnt = 0;
+			if ((PCData[0] == 'I') && (PCData[1] == 'F')) {
+				time_last_pcdata = HAL_GetTick();
+			}
 		}
 		LL_USART_EnableIT_RXNE(USART2);
 	}
