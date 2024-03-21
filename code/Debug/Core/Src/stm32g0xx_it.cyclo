@@ -1,0 +1,16 @@
+../Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_ll_tim.h:4262:22:LL_TIM_ClearFlag_UPDATE	1
+../Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_ll_tim.h:4273:26:LL_TIM_IsActiveFlag_UPDATE	2
+../Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_ll_usart.h:2997:26:LL_USART_IsActiveFlag_RXNE_RXFNE	2
+../Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_ll_usart.h:3478:22:LL_USART_EnableIT_RXNE_RXFNE	1
+../Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_ll_usart.h:3693:22:LL_USART_DisableIT_RXNE_RXFNE	1
+../Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_ll_usart.h:4251:25:LL_USART_ReceiveData8	1
+../Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_ll_usart.h:4274:22:LL_USART_TransmitData8	1
+../Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_ll_gpio.h:915:22:LL_GPIO_TogglePin	1
+../Core/Src/stm32g0xx_it.c:73:6:NMI_Handler	1
+../Core/Src/stm32g0xx_it.c:88:6:HardFault_Handler	1
+../Core/Src/stm32g0xx_it.c:103:6:SVC_Handler	1
+../Core/Src/stm32g0xx_it.c:116:6:PendSV_Handler	1
+../Core/Src/stm32g0xx_it.c:129:6:SysTick_Handler	1
+../Core/Src/stm32g0xx_it.c:150:6:TIM14_IRQHandler	2
+../Core/Src/stm32g0xx_it.c:166:6:USART1_IRQHandler	4
+../Core/Src/stm32g0xx_it.c:195:6:USART2_IRQHandler	41
