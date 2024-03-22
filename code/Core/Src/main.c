@@ -187,8 +187,18 @@ int main(void)
     	SetOutput();
     }
     if ((HAL_GetTick() - time_last_pcdata) > 3000){
-    	Send_String_To_TRX("IF;");
-    	LL_mDelay(1000);
+		#ifdef TX500
+    		Send_String_To_TRX("IF;");
+		#endif
+		#ifdef G90
+    		USART2_Send(0xFE);
+    		USART2_Send(0xFE);
+    		USART2_Send(0x70);
+    		USART2_Send(0x00);
+    		USART2_Send(0x03);
+    		USART2_Send(0xFD);
+		#endif
+    		LL_mDelay(1000);
     }
 
     /* USER CODE BEGIN 3 */
@@ -330,7 +340,12 @@ static void MX_USART1_UART_Init(void)
 
   /* USER CODE END USART1_Init 1 */
   USART_InitStruct.PrescalerValue = LL_USART_PRESCALER_DIV1;
+#ifdef TX500
   USART_InitStruct.BaudRate = 9600;
+#endif
+#ifdef G90
+  USART_InitStruct.BaudRate = 19200;
+#endif
   USART_InitStruct.DataWidth = LL_USART_DATAWIDTH_8B;
   USART_InitStruct.StopBits = LL_USART_STOPBITS_1;
   USART_InitStruct.Parity = LL_USART_PARITY_NONE;
@@ -407,7 +422,12 @@ static void MX_USART2_UART_Init(void)
 
   /* USER CODE END USART2_Init 1 */
   USART_InitStruct.PrescalerValue = LL_USART_PRESCALER_DIV1;
+#ifdef TX500
   USART_InitStruct.BaudRate = 9600;
+#endif
+#ifdef G90
+  USART_InitStruct.BaudRate = 19200;
+#endif
   USART_InitStruct.DataWidth = LL_USART_DATAWIDTH_8B;
   USART_InitStruct.StopBits = LL_USART_STOPBITS_1;
   USART_InitStruct.Parity = LL_USART_PARITY_NONE;

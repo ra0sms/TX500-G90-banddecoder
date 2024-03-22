@@ -29,23 +29,23 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY
  12 .comment      00000043  00000000  00000000  00020034  2**0
                   CONTENTS, READONLY
- 13 .debug_info   000078a0  00000000  00000000  00020077  2**0
+ 13 .debug_info   000078a1  00000000  00000000  00020077  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 14 .debug_abbrev 00001e1e  00000000  00000000  00027917  2**0
+ 14 .debug_abbrev 00001e1e  00000000  00000000  00027918  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
  15 .debug_aranges 000009d0  00000000  00000000  00029738  2**3
                   CONTENTS, READONLY, DEBUGGING, OCTETS
  16 .debug_rnglists 00000743  00000000  00000000  0002a108  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 17 .debug_macro  00016151  00000000  00000000  0002a84b  2**0
+ 17 .debug_macro  00016157  00000000  00000000  0002a84b  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 18 .debug_line   00009d42  00000000  00000000  0004099c  2**0
+ 18 .debug_line   00009d4a  00000000  00000000  000409a2  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 19 .debug_str    00083317  00000000  00000000  0004a6de  2**0
+ 19 .debug_str    0008331e  00000000  00000000  0004a6ec  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 20 .debug_frame  00002170  00000000  00000000  000cd9f8  2**2
+ 20 .debug_frame  00002170  00000000  00000000  000cda0c  2**2
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 21 .debug_line_str 0000006b  00000000  00000000  000cfb68  2**0
+ 21 .debug_line_str 0000006b  00000000  00000000  000cfb7c  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
 
 Disassembly of section .text:
@@ -1305,11 +1305,17 @@ int main(void)
  800080e:	4a0c      	ldr	r2, [pc, #48]	; (8000840 <main+0x98>)
  8000810:	4293      	cmp	r3, r2
  8000812:	d9f0      	bls.n	80007f6 <main+0x4e>
-    	Send_String_To_TRX("IF;");
+		#ifdef TX500
+    		Send_String_To_TRX("IF;");
  8000814:	4b0b      	ldr	r3, [pc, #44]	; (8000844 <main+0x9c>)
  8000816:	0018      	movs	r0, r3
  8000818:	f7ff fee8 	bl	80005ec <Send_String_To_TRX>
-    	LL_mDelay(1000);
+    		USART2_Send(0x70);
+    		USART2_Send(0x00);
+    		USART2_Send(0x03);
+    		USART2_Send(0xFD);
+		#endif
+    		LL_mDelay(1000);
  800081c:	23fa      	movs	r3, #250	; 0xfa
  800081e:	009b      	lsls	r3, r3, #2
  8000820:	0018      	movs	r0, r3
@@ -1669,11 +1675,16 @@ static void MX_USART1_UART_Init(void)
  8000a18:	187b      	adds	r3, r7, r1
  8000a1a:	2200      	movs	r2, #0
  8000a1c:	601a      	str	r2, [r3, #0]
+#ifdef TX500
   USART_InitStruct.BaudRate = 9600;
  8000a1e:	187b      	adds	r3, r7, r1
  8000a20:	2296      	movs	r2, #150	; 0x96
  8000a22:	0192      	lsls	r2, r2, #6
  8000a24:	605a      	str	r2, [r3, #4]
+#endif
+#ifdef G90
+  USART_InitStruct.BaudRate = 19200;
+#endif
   USART_InitStruct.DataWidth = LL_USART_DATAWIDTH_8B;
  8000a26:	187b      	adds	r3, r7, r1
  8000a28:	2200      	movs	r2, #0
@@ -1886,11 +1897,16 @@ static void MX_USART2_UART_Init(void)
  8000b56:	193b      	adds	r3, r7, r4
  8000b58:	2200      	movs	r2, #0
  8000b5a:	601a      	str	r2, [r3, #0]
+#ifdef TX500
   USART_InitStruct.BaudRate = 9600;
  8000b5c:	193b      	adds	r3, r7, r4
  8000b5e:	2296      	movs	r2, #150	; 0x96
  8000b60:	0192      	lsls	r2, r2, #6
  8000b62:	605a      	str	r2, [r3, #4]
+#endif
+#ifdef G90
+  USART_InitStruct.BaudRate = 19200;
+#endif
   USART_InitStruct.DataWidth = LL_USART_DATAWIDTH_8B;
  8000b64:	0021      	movs	r1, r4
  8000b66:	187b      	adds	r3, r7, r1
@@ -2752,6 +2768,7 @@ void USART1_IRQHandler(void)
  8000fce:	b083      	sub	sp, #12
  8000fd0:	af00      	add	r7, sp, #0
   /* USER CODE BEGIN USART1_IRQn 0 */
+#ifdef TX500
 	char letter;
 	static uint8_t cnt = 0;
 	if (LL_USART_IsActiveFlag_RXNE(USART1)) {
@@ -2841,7 +2858,7 @@ void USART1_IRQHandler(void)
  8001062:	4b05      	ldr	r3, [pc, #20]	; (8001078 <USART1_IRQHandler+0xac>)
  8001064:	0018      	movs	r0, r3
  8001066:	f7ff ff0f 	bl	8000e88 <LL_USART_EnableIT_RXNE_RXFNE>
-	}
+#endif
   /* USER CODE END USART1_IRQn 0 */
   /* USER CODE BEGIN USART1_IRQn 1 */
 
@@ -2869,6 +2886,7 @@ void USART2_IRQHandler(void)
  800108a:	b083      	sub	sp, #12
  800108c:	af00      	add	r7, sp, #0
   /* USER CODE BEGIN USART2_IRQn 0 */
+#ifdef TX500
 	char letter;
 	static uint8_t i = 0;
 	if (LL_USART_IsActiveFlag_RXNE(USART2)) {
@@ -3168,11 +3186,11 @@ void USART2_IRQHandler(void)
  8001280:	4b04      	ldr	r3, [pc, #16]	; (8001294 <USART2_IRQHandler+0x20c>)
  8001282:	0018      	movs	r0, r3
  8001284:	f7ff fe00 	bl	8000e88 <LL_USART_EnableIT_RXNE_RXFNE>
-	}
-  /* USER CODE END USART2_IRQn 0 */
-  /* USER CODE BEGIN USART2_IRQn 1 */
 
-  /* USER CODE END USART2_IRQn 1 */
+			}
+			LL_USART_EnableIT_RXNE(USART1);
+		}
+#endif
 }
  8001288:	46c0      	nop			; (mov r8, r8)
  800128a:	46bd      	mov	sp, r7

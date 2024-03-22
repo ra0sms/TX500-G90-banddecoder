@@ -32,6 +32,7 @@ extern int isDataReady;
 extern char PCData[40];
 extern char TRXData[40];
 
+
 /* USER CODE END TD */
 
 /* Private define ------------------------------------------------------------*/
@@ -167,6 +168,7 @@ void TIM14_IRQHandler(void)
 void USART1_IRQHandler(void)
 {
   /* USER CODE BEGIN USART1_IRQn 0 */
+#ifdef TX500
 	char letter;
 	static uint8_t cnt = 0;
 	if (LL_USART_IsActiveFlag_RXNE(USART1)) {
@@ -187,6 +189,30 @@ void USART1_IRQHandler(void)
 		}
 		LL_USART_EnableIT_RXNE(USART2);
 	}
+#endif
+
+#ifdef G90
+	char letter;
+		static uint8_t cnt = 0;
+		if (LL_USART_IsActiveFlag_RXNE(USART1)) {
+			LL_USART_DisableIT_RXNE(USART2);
+			letter = LL_USART_ReceiveData8(USART1);
+			LL_USART_TransmitData8(USART2, letter);
+			if (letter != 0xFD) {
+				PCData[cnt] = letter;
+				cnt++;
+				if (cnt == 15)
+					cnt = 0;
+			} else {
+				PCData[cnt] = 0xFD;
+				cnt = 0;
+				if ((PCData[0] == 0xFE) && (PCData[1] == 0xFE)) {
+					time_last_pcdata = HAL_GetTick();
+				}
+			}
+			LL_USART_EnableIT_RXNE(USART2);
+		}
+#endif
   /* USER CODE END USART1_IRQn 0 */
   /* USER CODE BEGIN USART1_IRQn 1 */
 
@@ -199,6 +225,7 @@ void USART1_IRQHandler(void)
 void USART2_IRQHandler(void)
 {
   /* USER CODE BEGIN USART2_IRQn 0 */
+#ifdef TX500
 	char letter;
 	static uint8_t i = 0;
 	if (LL_USART_IsActiveFlag_RXNE(USART2)) {
@@ -256,6 +283,55 @@ void USART2_IRQHandler(void)
   /* USER CODE BEGIN USART2_IRQn 1 */
 
   /* USER CODE END USART2_IRQn 1 */
+#endif
+
+#ifdef G90
+	uint8_t letter;
+		static uint8_t i = 0;
+		if (LL_USART_IsActiveFlag_RXNE(USART2)) {
+			LL_USART_DisableIT_RXNE(USART1);
+			letter = LL_USART_ReceiveData8(USART2);
+			LL_USART_TransmitData8(USART1, letter);
+			if (letter != 0xFD) {
+				TRXData[i] = letter;
+				i++;
+				isDataReady = 0;
+				if (i == 15)
+					i = 0;
+			} else {
+				TRXData[i] = 0xFD;
+				i = 0;
+				if ((TRXData[0] == 0xFE) && (TRXData[1] == 0xFE)
+						&& ((TRXData[4] == 0x00) || (TRXData[4] == 0x03))) {
+					isDataReady = 1;
+					if ((TRXData[8] == 0x01) || (TRXData[8] == 0x02))
+						flag_band = 160; //160m 1000-2999 kHz
+					if ((TRXData[8] == 0x03) || (TRXData[8] == 0x04))
+						flag_band = 80; //80m 3000-4999 kHz
+					if ((TRXData[8] == 0x05))
+						flag_band = 60; //60m 5000-5999 kHz
+					if ((TRXData[8] == 0x07))
+						flag_band = 40; //40m 7000-7999 kHz
+					if ((TRXData[8] == 0x10))
+						flag_band = 30; //30m 10000-10999 kHz
+					if ((TRXData[8] == 0x14))
+						flag_band = 20; //20m 14000-14999 kHz
+					if ((TRXData[8] == 0x18))
+						flag_band = 17; //17m 18000-18999 kHz
+					if ((TRXData[8] == 0x21))
+						flag_band = 15; //15m 21000-21999 kHz
+					if ((TRXData[8] == 0x24))
+						flag_band = 12; //12m 24000-24999 kHz
+					if ((TRXData[8] == 0x28) || (TRXData[8] == 0x29))
+						flag_band = 10; //10m 28000-29999 kHz
+					if ((TRXData[8] == 0x050))
+						flag_band = 6; //6m 50000-50999 kHz
+				}
+
+			}
+			LL_USART_EnableIT_RXNE(USART1);
+		}
+#endif
 }
 
 /* USER CODE BEGIN 1 */

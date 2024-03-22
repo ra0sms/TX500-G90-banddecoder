@@ -52,6 +52,12 @@ default.size.stdout \
 OBJDUMP_LIST += \
 tx500_decoder.list \
 
+OBJCOPY_HEX += \
+tx500_decoder.hex \
+
+OBJCOPY_BIN += \
+tx500_decoder.bin \
+
 
 # All Target
 all: main-build
@@ -75,12 +81,22 @@ tx500_decoder.list: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
 	@echo 'Finished building: $@'
 	@echo ' '
 
+tx500_decoder.hex: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-objcopy  -O ihex $(EXECUTABLES) "tx500_decoder.hex"
+	@echo 'Finished building: $@'
+	@echo ' '
+
+tx500_decoder.bin: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-objcopy  -O binary $(EXECUTABLES) "tx500_decoder.bin"
+	@echo 'Finished building: $@'
+	@echo ' '
+
 # Other Targets
 clean:
-	-$(RM) default.size.stdout tx500_decoder.elf tx500_decoder.list tx500_decoder.map
+	-$(RM) default.size.stdout tx500_decoder.bin tx500_decoder.elf tx500_decoder.hex tx500_decoder.list tx500_decoder.map
 	-@echo ' '
 
-secondary-outputs: $(SIZE_OUTPUT) $(OBJDUMP_LIST)
+secondary-outputs: $(SIZE_OUTPUT) $(OBJDUMP_LIST) $(OBJCOPY_HEX) $(OBJCOPY_BIN)
 
 fail-specified-linker-script-missing:
 	@echo 'Error: Cannot find the specified linker script. Check the linker settings in the build configuration.'

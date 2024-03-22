@@ -42,6 +42,12 @@ extern "C" {
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+
+/*  Choose your TRX----------------*/
+//#define G90
+#define TX500
+/*---------------------------------*/
+
 void Send_String_To_PC (char* str);
 void Send_String_To_TRX (char* str);
 
