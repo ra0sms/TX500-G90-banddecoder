@@ -44,8 +44,8 @@ extern "C" {
 /* USER CODE BEGIN Includes */
 
 /*  Choose your TRX----------------*/
-//#define G90
-#define TX500
+#define G90
+//#define TX500
 /*---------------------------------*/
 
 void Send_String_To_PC (char* str);
