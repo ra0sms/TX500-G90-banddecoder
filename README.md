@@ -10,7 +10,7 @@ It works via CAT protocol.
 
 ## Schematic
 
-![](tx500_banddecoder_sch.jpg)
+![](DipTrace/tx500_banddecoder_sch.jpg)
 
 ## PCB
 
