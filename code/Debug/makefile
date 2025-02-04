@@ -1,6 +1,6 @@
 ################################################################################
 # Automatically-generated file. Do not edit!
-# Toolchain: GNU Tools for STM32 (11.3.rel1)
+# Toolchain: GNU Tools for STM32 (12.3.rel1)
 ################################################################################
 
 -include ../makefile.init
@@ -66,8 +66,8 @@ all: main-build
 main-build: tx500_decoder.elf secondary-outputs
 
 # Tool invocations
-tx500_decoder.elf tx500_decoder.map: $(OBJS) $(USER_OBJS) C:\Users\ra0sms\Documents\stm32\stm32g030\TX500_decoder\code\STM32G030F6PX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "tx500_decoder.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m0plus -T"C:\Users\ra0sms\Documents\stm32\stm32g030\TX500_decoder\code\STM32G030F6PX_FLASH.ld" --specs=nosys.specs -Wl,-Map="tx500_decoder.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+tx500_decoder.elf tx500_decoder.map: $(OBJS) $(USER_OBJS) /home/ra0sms/stm32/stm32g030/TX500_decoder/code/STM32G030F6PX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "tx500_decoder.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m0plus -T"/home/ra0sms/stm32/stm32g030/TX500_decoder/code/STM32G030F6PX_FLASH.ld" --specs=nosys.specs -Wl,-Map="tx500_decoder.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 

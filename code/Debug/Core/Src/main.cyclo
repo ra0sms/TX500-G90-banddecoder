@@ -1,5 +1,5 @@
-../Drivers/CMSIS/Include/core_cm0plus.h:741:22:__NVIC_EnableIRQ	2
-../Drivers/CMSIS/Include/core_cm0plus.h:850:22:__NVIC_SetPriority	2
+../Core/Inc/core_cm0plus.h:741:22:__NVIC_EnableIRQ	2
+../Core/Inc/core_cm0plus.h:850:22:__NVIC_SetPriority	2
 ../Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_ll_tim.h:1586:22:LL_TIM_EnableCounter	1
 ../Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_ll_tim.h:1766:22:LL_TIM_EnableARRPreload	1
 ../Drivers/STM32G0xx_HAL_Driver/Inc/stm32g0xx_ll_tim.h:4625:22:LL_TIM_EnableIT_UPDATE	1
